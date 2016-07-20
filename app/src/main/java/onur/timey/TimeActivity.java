@@ -33,7 +33,7 @@ public class TimeActivity extends AppCompatActivity {
     String output;
     long seconds;
 
-   
+
 
     Snackbar snackbar;
     CountDownTimer countDownTimer;

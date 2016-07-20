@@ -61,9 +61,7 @@ public class FeedbackActivity extends AppCompatActivity {
                 linkedList.add(insideEditText);
                 feedbackRef.push().setValue(linkedList);
 
-                if(feedbackRef.push()==null){
-                    Toast.makeText(FeedbackActivity.this,"Gönderilemedi!",Toast.LENGTH_LONG).show();
-                }
+                
 
 
 
