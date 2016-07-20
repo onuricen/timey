@@ -1,0 +1,42 @@
+{
+  "project_info": {
+    "project_number": "542584164637",
+    "firebase_url": "https://timey-58240.firebaseio.com",
+    "project_id": "timey-58240",
+    "storage_bucket": "timey-58240.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:542584164637:android:b6d3f1cf2f293de0",
+        "android_client_info": {
+          "package_name": "onur.timey"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "542584164637-uqe2m8klcsjcu0oo97i827bn7tpv5g0n.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyANSMouRxhHjJqOHrCM2sL958MCS3VuIck"
+        }
+      ],
+      "services": {
+        "analytics_service": {
+          "status": 1
+        },
+        "appinvite_service": {
+          "status": 1,
+          "other_platform_oauth_client": []
+        },
+        "ads_service": {
+          "status": 2
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

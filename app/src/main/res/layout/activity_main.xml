@@ -1,0 +1,135 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+    <ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+        android:id="@+id/ScrollView01"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:fillViewport="true"
+        android:scrollbars="vertical" >
+
+
+    <LinearLayout android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+
+
+    <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:paddingBottom="@dimen/activity_vertical_margin"
+    android:paddingLeft="@dimen/activity_horizontal_margin"
+    android:paddingRight="@dimen/activity_horizontal_margin"
+    android:paddingTop="@dimen/activity_vertical_margin"
+    tools:context="onur.timey.MainActivity"
+    android:background="#424242">
+
+
+
+
+
+
+    <TextView
+        android:background="#424242"
+        android:textStyle="bold"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textAppearance="?android:attr/textAppearanceSmall"
+        android:text="Alpha V 0.0.1"
+        android:id="@+id/versionText"
+        android:layout_below="@+id/textView"
+        android:layout_centerHorizontal="true" />
+
+    <TextView
+        android:background="#424242"
+        android:textSize="13dp"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textAppearance="?android:attr/textAppearanceSmall"
+        android:text="Bu tatlış uygulama ile zamanınızı daha verimli kullanabilirsiniz."
+        android:id="@+id/descText1"
+        android:layout_marginTop="30dp"
+        android:layout_below="@+id/textView"
+        android:layout_alignParentStart="true" />
+
+    <TextView
+        android:background="#424242"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textAppearance="?android:attr/textAppearanceSmall"
+        android:text="Uygulamadan çıktığınız anda süre sıfırlanır ona göre! "
+        android:id="@+id/descText2"
+        android:layout_marginTop="38dp"
+        android:layout_below="@+id/descText5"
+        android:layout_alignParentStart="true" />
+
+    <TextView
+        android:background="#424242"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textAppearance="?android:attr/textAppearanceSmall"
+        android:text="Uygulamanın Şuanki Sürümü ALPHA&apos;dır değişiklikler olabilir (material design gelecek şuan bokDesign var )"
+        android:id="@+id/descText3"
+        android:layout_below="@+id/descText2"
+        android:layout_alignParentEnd="true"
+        android:layout_marginTop="24dp" />
+
+    <TextView
+        android:background="#424242"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textAppearance="?android:attr/textAppearanceSmall"
+        android:text="40 Dakika çalışma 5 dakika mola şeklinde çalışmakta "
+        android:id="@+id/descText4"
+        android:layout_below="@+id/descText1"
+        android:layout_alignParentStart="true"
+        android:layout_marginTop="32dp" />
+
+    <TextView
+        android:background="#424242"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textAppearance="?android:attr/textAppearanceSmall"
+        android:text="Public Version&apos;da böyle boktan textler olmayacak tabi bu textler sadece introda gösterilecek public version da (Zaa tabi public version olursa zaa zaa)"
+        android:id="@+id/descText5"
+        android:layout_below="@+id/descText4"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="28dp" />
+
+    <TextView
+        android:background="#424242"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textAppearance="?android:attr/textAppearanceSmall"
+        android:text="evet isim boktan ama boktan isimler koymayı seviyorum"
+        android:id="@+id/descText6"
+        android:layout_below="@+id/descText3"
+        android:layout_alignParentStart="true"
+        android:layout_marginTop="31dp" />
+
+    <TextView
+        android:background="#424242"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textAppearance="?android:attr/textAppearanceLarge"
+        android:text="Timey Alpha "
+        android:textSize="50dp"
+        android:id="@+id/textView"
+        android:layout_marginTop="24dp"
+        android:layout_alignParentTop="true"
+        android:layout_centerHorizontal="true" />
+
+        <Button
+            style="@style/Widget.AppCompat.Button.Colored"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Başlat!"
+            android:id="@+id/startButton"
+            android:layout_marginTop="55dp"
+            android:layout_below="@+id/descText6"
+            android:layout_centerHorizontal="true" />
+
+
+    </RelativeLayout>
+    </LinearLayout>
+    </ScrollView>
