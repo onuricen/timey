@@ -3,6 +3,7 @@ package onur.timey;
 
 
 import android.os.Bundle;
+import android.os.PowerManager;
 import android.support.annotation.Nullable;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
@@ -39,12 +40,28 @@ public class TimeActivity extends AppCompatActivity {
     @BindView(R.id.continueButton)Button continueButton;
 
     @OnClick(R.id.stopButton) void stopButtonAction(){
+        wakeLock.release();
+        if (wakeLock.isHeld()){
+            Log.i("stopButton","Wakelock didn't released (still works)");
+        }
+        else {
+            Log.i("stopButton","Wakelock released!!! (doesnt work)");
+        }
+
         countDownTimerWithPause.pause();
         stopButton.setVisibility(View.INVISIBLE);
         continueButton.setVisibility(View.VISIBLE);
     }
 
     @OnClick(R.id.continueButton)void continueButton(){
+
+        wakeLock.acquire();
+        if (wakeLock.isHeld()){
+            Log.i("Cont Button","Wakelock didn't released (still works)");
+        }
+        else {
+            Log.i("Cont Button","Wakelock released!!! (doesnt work)");
+        }
         countDownTimerWithPause.resume();
         stopButton.setVisibility(View.VISIBLE);
         continueButton.setVisibility(View.INVISIBLE);
@@ -54,11 +71,22 @@ public class TimeActivity extends AppCompatActivity {
 
     long seconds;
 
+    PowerManager.WakeLock wakeLock;
+    PowerManager powerManager;
 
     public boolean startAgainAnswer;
 
 
-
+    @Override
+    protected void onPause() {
+        super.onPause();
+        if (wakeLock.isHeld()){
+            Log.i("onPause","Wakelock didn't released (still works)");
+        }
+        else {
+            Log.i("onPause","Wakelock released!!! (doesnt work)");
+        }
+    }
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -66,6 +94,16 @@ public class TimeActivity extends AppCompatActivity {
         setContentView(R.layout.time_activity);
 
         ButterKnife.bind(this);
+
+        powerManager = (PowerManager) getSystemService(POWER_SERVICE);
+        wakeLock = powerManager.newWakeLock(PowerManager.PARTIAL_WAKE_LOCK,"TimeyWakeLock");
+        wakeLock.acquire();
+
+        if(wakeLock.isHeld()){
+            Log.i("onCreate","WakeLock didn't released (still works)");
+        } else {
+            Log.i("onCreate","WakeLock released!!!");
+        }
 
 
         startMainTimer();
@@ -114,7 +152,7 @@ public class TimeActivity extends AppCompatActivity {
 
                 minText.setText(formatTimeMinutes(millisUntilFinished));
                 secondsText.setText(formatTimeSeconds(millisUntilFinished));
-                
+
 
             }
 
