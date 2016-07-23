@@ -22,7 +22,7 @@ import butterknife.OnClick;
  */
 public class TimeActivity extends AppCompatActivity {
 
-
+      //  dont forget to consider re-writing in service or just provide to start  TimeActivity's CountDownTimer in service
 
 
 
@@ -68,50 +68,65 @@ public class TimeActivity extends AppCompatActivity {
         ButterKnife.bind(this);
 
 
-        // 1500000
+        startMainTimer();
 
-        countDownTimerWithPause=new CountDownTimerWithPause(1500000,1) {
+
+
+
+
+
+    }
+
+
+    private void startBreakTimeTimer(){
+        countDownTimerWithPauseBreak=new CountDownTimerWithPause(300000,1) {
             @Override
             public void onTick(long millisUntilFinished) {
-
-
-                    minText.setText(formatTimeMinutes(millisUntilFinished));
-                    secondsText.setText(formatTimeSeconds(millisUntilFinished));
-                    Log.i("INFO",""+formatTimeSeconds(millisUntilFinished));
+                minText.setText(formatTimeMinutes(millisUntilFinished));
+                secondsText.setText(formatTimeSeconds(millisUntilFinished));
 
             }
 
-
-
             @Override
             public void onFinish() {
-                    //start break time
-                  countDownTimerWithPauseBreak=new CountDownTimerWithPause(300000,1) {
-                      @Override
-                      public void onTick(long millisUntilFinished) {
-                          minText.setText(formatTimeMinutes(millisUntilFinished));
-                          secondsText.setText(formatTimeSeconds(millisUntilFinished));
-                          Log.i("INFO",""+formatTimeSeconds(millisUntilFinished));
-                      }
-
-                      @Override
-                      public void onFinish() {
 
                           /*open a dialog and ask do you want to contiune working and while user wants to work loop
                            countDownTimerWithPause */
 
-                        startAgainAnswer=true;
-                          if (startAgainAnswer==true){
-
-                          }
-                      }
-                  }.start();
+                startAgainAnswer=true;
+                if (startAgainAnswer==true){
+                      startMainTimer();
+                }
             }
         }.start();
 
+    }
 
 
+    private void startMainTimer() {
 
+        // 1500000
+
+        countDownTimerWithPause = new CountDownTimerWithPause(1500000, 1) {
+            @Override
+            public void onTick(long millisUntilFinished) {
+
+
+                minText.setText(formatTimeMinutes(millisUntilFinished));
+                secondsText.setText(formatTimeSeconds(millisUntilFinished));
+                
+
+            }
+
+
+            @Override
+            public void onFinish() {
+                //write notification
+                startBreakTimeTimer();
+
+            }
+
+        }.start();
     }
 
 

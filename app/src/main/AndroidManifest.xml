@@ -11,6 +11,8 @@
         android:theme="@style/ZaaTheme"
         >
 
+        <uses-permission android:name="android.permission.WAKE_LOCK" />
+
         <activity android:name=".MainActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
