@@ -1,9 +1,12 @@
 package onur.timey;
 
 
+
 import android.os.Bundle;
 
+
 import android.support.v7.app.AppCompatActivity;
+
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
@@ -18,6 +21,7 @@ import com.google.firebase.database.ValueEventListener;
 import java.util.LinkedList;
 
 
+
 /**
  * Created by onurh on 18.07.2016.
  */
@@ -26,10 +30,14 @@ import java.util.LinkedList;
 public class FeedbackActivity extends AppCompatActivity {
 
 
+
     DatabaseReference databaseReference= FirebaseDatabase.getInstance().getReference();
 
 
     DatabaseReference feedbackRef=databaseReference.child("Feedback");
+
+
+
 
 
 
@@ -53,6 +61,7 @@ public class FeedbackActivity extends AppCompatActivity {
 
 
 
+
         sendButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -61,15 +70,17 @@ public class FeedbackActivity extends AppCompatActivity {
                 linkedList.add(insideEditText);
                 feedbackRef.push().setValue(linkedList);
 
-                
-
-
-
-
             }
         });
 
     }
+
+
+
+
+
+
+
 
 
     @Override
@@ -84,11 +95,18 @@ public class FeedbackActivity extends AppCompatActivity {
 
             @Override
             public void onCancelled(DatabaseError databaseError) {
-                Toast.makeText(FeedbackActivity.this,"İptal Edildi (databaseError)",Toast.LENGTH_LONG);
+                Toast.makeText(FeedbackActivity.this,"İptal Edildi (databaseError)",Toast.LENGTH_LONG).show();
             }
         });
 
 
     }
 
-}
+
+
+
+
+    }
+
+
+

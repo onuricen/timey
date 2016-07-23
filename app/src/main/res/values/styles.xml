@@ -9,7 +9,12 @@
     </style>
 
     <style name="ZaaTheme" parent="Theme.AppCompat.Light.DarkActionBar">
-        <item name="android:colorBackground">#2c3e50</item>
+        <item name="android:colorBackground">#424242</item>
+        <item name="android:actionBarStyle">@style/MyActionBar</item>
+
+    </style>
+    <style name="MyActionBar" parent="@android:style/Widget.Holo.Light.ActionBar">
+        <item name="android:background">#424242</item>
     </style>
 
 </resources>

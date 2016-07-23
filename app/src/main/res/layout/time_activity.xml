@@ -10,11 +10,12 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:textAppearance="?android:attr/textAppearanceLarge"
-        android:text="00"
+        android:text="25"
         android:id="@+id/minuteText"
-        android:layout_marginTop="181dp"
-        android:layout_alignParentTop="true"
-        android:layout_centerHorizontal="true" />
+        android:textColor="#d7ccc8"
+        android:layout_alignBottom="@+id/secondText"
+        android:layout_toLeftOf="@+id/secondText"
+        android:layout_toStartOf="@+id/secondText" />
 
     <Button
         style="@style/Widget.AppCompat.Button.Colored"
@@ -22,8 +23,33 @@
         android:layout_height="wrap_content"
         android:text="Durdur"
         android:id="@+id/stopButton"
-        android:layout_centerHorizontal="true"
-        android:layout_marginTop="28dp"
-        android:layout_below="@+id/minuteText" />
+        android:layout_alignTop="@+id/continueButton"
+        android:layout_centerHorizontal="true" />
+
+    <Button
+        android:visibility="invisible"
+        style="@style/Widget.AppCompat.Button.Colored"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Devam Et"
+        android:id="@+id/continueButton"
+        android:layout_alignParentBottom="true"
+        android:layout_alignRight="@+id/stopButton"
+        android:layout_alignEnd="@+id/stopButton" />
+
+
+
+    <TextView
+        android:textSize="25dp"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textAppearance="?android:attr/textAppearanceLarge"
+        android:text="00"
+        android:id="@+id/secondText"
+        android:textColor="#d7ccc8"
+        android:layout_alignParentTop="true"
+        android:layout_alignRight="@+id/stopButton"
+        android:layout_alignEnd="@+id/stopButton"
+        android:layout_marginTop="231dp" />
 
 </RelativeLayout>
