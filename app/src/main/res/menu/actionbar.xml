@@ -10,7 +10,11 @@
 
         android:id="@+id/feedbackItem"
         android:title="Feedback"
-        android:showAsAction="always"/>
+        android:showAsAction="ifRoom"/>
 
-
+    <item
+        android:id="@+id/preferenceItem"
+        android:title="Ayarlar"
+        android:showAsAction="ifRoom"
+        />
 </menu>

@@ -1,0 +1,58 @@
+<?xml version="1.0" encoding="utf-8"?>
+<PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent" android:layout_height="match_parent" >
+
+
+
+    <PreferenceCategory
+        android:title="Zamanlayıcı"
+        android:key="Countdowntimer_category_zamanlayıcı">
+
+        <CheckBoxPreference
+            android:key="countdowntimer_loop_pKey"
+            android:summary="Mola bittikten sonra süreyi tekrar başlat"
+            android:title="Zamanlayıcı Döngüsü"
+            android:defaultValue="true"
+            />
+
+    </PreferenceCategory>
+
+    <PreferenceCategory
+        android:title="Bildirimler"
+        android:key="Countdowntimer_category_bildirimler">
+
+
+        <CheckBoxPreference
+            android:key="countdowntimer_notifications_pKey"
+            android:summary="Bildirimleri aç (önerilir)"
+            android:title="Bildirimler"
+            android:defaultValue="true"
+            />
+
+        <CheckBoxPreference
+            android:key="countdowntimer_wearnotifications_pKey"
+            android:summary="Mola süresi bitince bildirimin akıllı saatinize gelmesini sağlar"
+            android:title="Android Wear Bildirimleri"
+            android:defaultValue="true"
+            />
+
+
+
+    </PreferenceCategory>
+
+    <PreferenceCategory>
+        android:title="Pro Versiyon Ayarları"
+        android:key="zii"
+        >
+
+        <CheckBoxPreference
+            android:key="zaa"
+            android:summary="zaa"
+            android:title="zaa"
+            android:defaultValue="true"
+            />
+    </PreferenceCategory>
+
+
+
+</PreferenceScreen>

@@ -1,8 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:layout_width="match_parent" android:layout_height="match_parent"
-    android:background="#424242"
-    >
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:background="#424242">
 
 
     <TextView
@@ -13,9 +14,20 @@
         android:text="25"
         android:id="@+id/minuteText"
         android:textColor="#d7ccc8"
-        android:layout_alignBottom="@+id/secondText"
-        android:layout_toLeftOf="@+id/secondText"
+        android:layout_centerVertical="true"
         android:layout_toStartOf="@+id/secondText" />
+
+    <com.mikhaellopez.circularprogressbar.CircularProgressBar
+        android:id="@+id/circularProgressBar"
+        android:layout_width="400dp"
+        android:layout_height="wrap_content"
+        app:cpb_background_progressbar_color="#9E9E9E"
+        app:cpb_background_progressbar_width="5dp"
+        app:cpb_progressbar_color="#F44336"
+        app:cpb_progressbar_width="5dp"
+        android:layout_centerVertical="true"
+        android:layout_alignParentStart="true" />
+
 
     <Button
         style="@style/Widget.AppCompat.Button.Colored"
@@ -24,7 +36,8 @@
         android:text="Durdur"
         android:id="@+id/stopButton"
         android:layout_alignTop="@+id/continueButton"
-        android:layout_centerHorizontal="true" />
+        android:layout_centerHorizontal="true"
+        android:visibility="invisible" />
 
     <Button
         android:visibility="invisible"
@@ -47,9 +60,40 @@
         android:text="00"
         android:id="@+id/secondText"
         android:textColor="#d7ccc8"
+        android:layout_alignBottom="@+id/minuteText"
+        android:layout_alignEnd="@+id/stopButton" />
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textAppearance="?android:attr/textAppearanceSmall"
+        android:text="Çalışma"
+        android:id="@+id/breakOrMainTimer"
+        android:layout_marginTop="24dp"
+        android:textColor="#d7ccc8"
+        android:textStyle="bold"
         android:layout_alignParentTop="true"
-        android:layout_alignRight="@+id/stopButton"
-        android:layout_alignEnd="@+id/stopButton"
-        android:layout_marginTop="231dp" />
+        android:layout_centerHorizontal="true" />
+
+    <Button
+        style="@style/Widget.AppCompat.Button.Colored"
+        android:visibility="visible"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Başlat"
+        android:id="@+id/startButton"
+        android:layout_alignParentBottom="true"
+        android:layout_alignStart="@+id/stopButton" />
+
+    <Button
+        style="@style/Widget.AppCompat.Button.Colored"
+        android:visibility="visible"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="İptal"
+        android:id="@+id/cancelButton"
+        android:layout_alignParentBottom="true"
+        android:layout_toEndOf="@+id/stopButton"
+        android:layout_marginStart="28dp" />
 
 </RelativeLayout>
