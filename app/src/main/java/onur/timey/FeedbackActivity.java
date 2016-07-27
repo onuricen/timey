@@ -2,6 +2,8 @@ package onur.timey;
 
 
 
+import android.graphics.drawable.ColorDrawable;
+import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 
 
@@ -60,7 +62,8 @@ public class FeedbackActivity extends AppCompatActivity {
 
 
 
-
+        getSupportActionBar().setBackgroundDrawable(new ColorDrawable(0xFF303030));
+        getSupportActionBar().setTitle("Feedback");
 
         sendButton.setOnClickListener(new View.OnClickListener() {
             @Override

@@ -1,3 +1,17 @@
 <resources>
     <string name="app_name">Timey</string>
+    <string-array name="circularBarColorSettings">
+        <item>Kırmızı</item>
+        <item>Mor</item>
+    </string-array>
+    <string-array name="miBandVibrationSetting">
+        <item>3</item>
+        <item>4</item>
+        <item>5</item>
+        <item>6</item>
+        <item>7</item>
+        <item>8</item>
+        <item>9</item>
+        <item>10</item>
+    </string-array>
 </resources>

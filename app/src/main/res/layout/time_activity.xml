@@ -3,30 +3,15 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    android:background="#424242">
+    android:background="#222222">
 
 
-    <TextView
-        android:textSize="50dp"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:textAppearance="?android:attr/textAppearanceLarge"
-        android:text="25"
-        android:id="@+id/minuteText"
-        android:textColor="#d7ccc8"
-        android:layout_centerVertical="true"
-        android:layout_toStartOf="@+id/secondText" />
 
-    <com.mikhaellopez.circularprogressbar.CircularProgressBar
-        android:id="@+id/circularProgressBar"
-        android:layout_width="400dp"
-        android:layout_height="wrap_content"
-        app:cpb_background_progressbar_color="#9E9E9E"
-        app:cpb_background_progressbar_width="5dp"
-        app:cpb_progressbar_color="#F44336"
-        app:cpb_progressbar_width="5dp"
-        android:layout_centerVertical="true"
-        android:layout_alignParentStart="true" />
+
+
+
+
+
 
 
     <Button
@@ -51,25 +36,12 @@
         android:layout_alignEnd="@+id/stopButton" />
 
 
-
-    <TextView
-        android:textSize="25dp"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:textAppearance="?android:attr/textAppearanceLarge"
-        android:text="00"
-        android:id="@+id/secondText"
-        android:textColor="#d7ccc8"
-        android:layout_alignBottom="@+id/minuteText"
-        android:layout_alignEnd="@+id/stopButton" />
-
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:textAppearance="?android:attr/textAppearanceSmall"
         android:text="Çalışma"
         android:id="@+id/breakOrMainTimer"
-        android:layout_marginTop="24dp"
         android:textColor="#d7ccc8"
         android:textStyle="bold"
         android:layout_alignParentTop="true"
@@ -95,5 +67,64 @@
         android:layout_alignParentBottom="true"
         android:layout_toEndOf="@+id/stopButton"
         android:layout_marginStart="28dp" />
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_above="@+id/stopButton"
+        android:layout_alignStart="@+id/space"
+        android:layout_alignEnd="@+id/cancelButton">
+
+
+
+        <com.mikhaellopez.circularprogressbar.CircularProgressBar
+            android:id="@+id/circularProgressBar"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            app:cpb_background_progressbar_color="#ffaaaaaa"
+            app:cpb_background_progressbar_width="5dp"
+            app:cpb_progressbar_color="#fff44336"
+            app:cpb_progressbar_width="10dp"
+            android:layout_alignParentTop="true"
+            android:layout_alignParentStart="true"
+            android:layout_marginTop="38dp" />
+
+        <TextView
+            android:textSize="60dp"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textAppearance="?android:attr/textAppearanceLarge"
+            android:text="25"
+            android:id="@+id/minuteText"
+            android:textColor="#d7ccc8"
+            android:layout_marginLeft="54dp"
+            android:layout_alignBottom="@+id/secondText"
+            android:layout_toStartOf="@+id/secondText" />
+        <TextView
+            android:textSize="30dp"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textAppearance="?android:attr/textAppearanceLarge"
+            android:text="00"
+            android:id="@+id/secondText"
+            android:textColor="#d7ccc8"
+            android:layout_alignBottom="@+id/circularProgressBar"
+            android:layout_alignParentEnd="true"
+            android:layout_marginEnd="107dp"
+            android:layout_marginBottom="140dp" />
+
+
+
+
+
+    </RelativeLayout>
+
+    <Space
+        android:layout_width="115dp"
+        android:layout_height="10dp"
+        android:layout_alignBottom="@+id/stopButton"
+        android:layout_toStartOf="@+id/stopButton"
+        android:id="@+id/space" />
+
 
 </RelativeLayout>

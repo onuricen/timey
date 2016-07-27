@@ -20,6 +20,7 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
+        <activity android:name=".AboutActivity" android:screenOrientation="portrait"></activity>
         <activity android:name=".FeedbackActivity" android:screenOrientation="portrait"></activity>
         <activity android:name=".Settings" android:screenOrientation="portrait"></activity>
     </application>

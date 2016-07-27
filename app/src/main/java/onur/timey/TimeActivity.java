@@ -2,7 +2,6 @@ package onur.timey;
 
 
 
-import android.app.Activity;
 import android.app.Notification;
 import android.app.NotificationManager;
 import android.app.PendingIntent;
@@ -10,16 +9,14 @@ import android.content.Intent;
 import android.content.SharedPreferences;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
-import android.media.Ringtone;
+import android.graphics.drawable.ColorDrawable;
 import android.media.RingtoneManager;
 import android.net.Uri;
-import android.os.Build;
 import android.os.Bundle;
 import android.os.PowerManager;
 import android.preference.PreferenceManager;
 import android.support.annotation.Nullable;
 import android.support.v4.app.NotificationCompat;
-import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.view.Menu;
@@ -32,9 +29,8 @@ import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
 
-import android.support.v4.app.NotificationCompat;
-import android.support.v4.app.NotificationManagerCompat;
-import android.support.v4.app.NotificationCompat.WearableExtender;
+
+
 
 import com.mikhaellopez.circularprogressbar.CircularProgressBar;
 
@@ -53,82 +49,6 @@ public class TimeActivity extends AppCompatActivity {
 
     PowerManager.WakeLock wakeLock;
     PowerManager powerManager;
-
-
-
-  //look circularprogressbar s code to understand how animationwith timing works
-    public CountDownTimerWithPause  countDownTimerWithPause = new CountDownTimerWithPause(10000, 1) {
-        // 1500000
-        @Override
-        public void onTick(long millisUntilFinished) {
-           // cdtProgress=millisUntilFinished;
-            minText.setText(formatTimeMinutes(millisUntilFinished));
-            secondsText.setText(formatTimeSeconds(millisUntilFinished));
-            //circularProgressBar.setProgress(cdtProgress*1000);
-        }
-
-
-
-
-
-
-        @Override
-        public void onFinish() {
-            onBreak = true;
-            startBreakTimeTimer();
-
-        }
-
-    };
-
-
-
-   public CountDownTimerWithPause countDownTimerWithPauseBreak = new CountDownTimerWithPause(10000, 1) {
-        //300000
-
-
-    //add a RelativeLayout inside
-
-        @Override
-        public void onTick(long millisUntilFinished) {
-           //cdtProgress=millisUntilFinished;
-            minText.setText(formatTimeMinutes(millisUntilFinished));
-            secondsText.setText(formatTimeSeconds(millisUntilFinished));
-            //circularProgressBar.setProgress(cdtProgress*1000);
-
-        }
-
-        @Override
-        public void onFinish() {
-
-            SharedPreferences getPrefs = PreferenceManager.getDefaultSharedPreferences(getBaseContext());
-
-
-            boolean loop = getPrefs.getBoolean("countdowntimer_loop_pKey", true);
-
-
-            boolean notifSetting = getPrefs.getBoolean("countdowntimer_notifications_pKey", true);
-            if (notifSetting){
-                if(!loop){
-                    breakFinishNotfSentence="Mola Süren Bitti";
-                }
-                onBreakFinishNotification();
-            }
-
-
-            if (loop == true) {
-                onBreak = false;
-                startMainTimer();
-                Log.i("CdtLoop", "CountDownTimer Loop true");
-            } else {
-                Intent goBackMainIntent = new Intent(getApplicationContext(), TimeActivity.class);
-                startActivity(goBackMainIntent);
-            }
-        }
-    };
-
-
-
 
 
 
@@ -157,12 +77,95 @@ public class TimeActivity extends AppCompatActivity {
     @BindView(R.id.circularProgressBar)
     CircularProgressBar circularProgressBar;
 
+    int timeNormal;
+    int timeBreak;
+
+
+    //look circularprogressbar s code to understand how animationwith timing works
+    public CountDownTimerWithPause  countDownTimerWithPause = new CountDownTimerWithPause(1500000, 1) {
+        // 1500000
+        @Override
+        public void onTick(long millisUntilFinished) {
+
+            minText.setText(formatTimeMinutes(millisUntilFinished));
+            secondsText.setText(formatTimeSeconds(millisUntilFinished));
+            timeFromMiliseconds=circularProgressBar.getProgress();
+            timeNormal=(int)millisUntilFinished;
+
+        }
+
+
+        @Override
+        public void onFinish() {
+            onBreak = true;
+            startBreakTimeTimer();
+
+        }
+
+    };
+
+
+
+   public CountDownTimerWithPause countDownTimerWithPauseBreak = new CountDownTimerWithPause(300000, 1) {
+        //300000
+
+
+    //add a RelativeLayout inside
+
+        @Override
+        public void onTick(long millisUntilFinished) {
+
+            minText.setText(formatTimeMinutes(millisUntilFinished));
+            secondsText.setText(formatTimeSeconds(millisUntilFinished));
+            timeFromMiliseconds=circularProgressBar.getProgress();
+            timeBreak=(int)millisUntilFinished;
+
+
+        }
+
+        @Override
+        public void onFinish() {
+
+            SharedPreferences getPrefs = PreferenceManager.getDefaultSharedPreferences(getBaseContext());
+
+
+            boolean loop = getPrefs.getBoolean("countdowntimer_loop_pKey", true);
+
+
+            boolean notifSetting = getPrefs.getBoolean("countdowntimer_notifications_pKey", true);
+            if (notifSetting){
+                if(!loop){
+                    breakFinishNotfSentence="Mola Süren Bitti";
+                }
+                onBreakFinishNotification();
+            }
+
+
+            if (loop == true) {
+                onBreak = false;
+                startMainTimer();
+                Log.i("CdtLoop", "CountDownTimer Loop true");
+            } else {
+                Intent goBackMainIntent = new Intent(getApplicationContext(), TimeActivity.class);
+                startActivity(goBackMainIntent);
+                finish();
+            }
+        }
+    };
+
+
+
+
+
+
+
+
 
     long seconds;
     public boolean onBreak;
 
     String breakFinishNotfSentence="Mola Süren Bitti Çalışmana Devam Et";
-   long cdtProgress;
+    float timeFromMiliseconds;
 
 
 
@@ -184,6 +187,15 @@ public class TimeActivity extends AppCompatActivity {
 
         ButterKnife.bind(this);
 
+        //changing actionbar's color to background color
+        getSupportActionBar().setBackgroundDrawable(new ColorDrawable(0xff222222));
+
+        //removing actionbar's shadow
+        getSupportActionBar().setElevation(0);
+
+        getSupportActionBar().setTitle(null);
+
+
         powerManager = (PowerManager) getSystemService(POWER_SERVICE);
         wakeLock = powerManager.newWakeLock(PowerManager.PARTIAL_WAKE_LOCK, "TimeyWakeLock");
         wakeLock.acquire();
@@ -194,8 +206,9 @@ public class TimeActivity extends AppCompatActivity {
             Log.i("onCreate", "WakeLock released!!!");
         }
 
-        //when you set TimeActivity for main activity dont forget to change this line below
-        //startMainTimer();
+
+
+
 
 
 
@@ -228,6 +241,12 @@ public class TimeActivity extends AppCompatActivity {
                 startActivity(preferenceIntent);
                 return true;
             }
+            case R.id.aboutItem:{
+
+                Intent aboutIntent=new Intent(this,AboutActivity.class);
+                startActivity(aboutIntent);
+                return true;
+            }
 
 
 
@@ -254,8 +273,9 @@ public class TimeActivity extends AppCompatActivity {
 
         }
 
-
-
+        countDownTimerWithPauseBreak.start();
+        circularProgressBar.setProgress(0);
+        circularProgressBar.setProgressWithAnimation(100,300000);
 
     }
 
@@ -264,11 +284,13 @@ public class TimeActivity extends AppCompatActivity {
 
     private void startMainTimer() {
 
+
         breakOrMainTimerText.setText("Çalışma");
         countDownTimerWithPause.start();
+        circularProgressBar.setProgressWithAnimation(100,1500000);
+
 
     }
-
 
     public String formatTimeMinutes(long mlSeconds) {
         seconds = mlSeconds / 1000;
@@ -282,13 +304,20 @@ public class TimeActivity extends AppCompatActivity {
     }
 
     public String formatTimeSeconds(long mlSeconds) {
-        seconds = mlSeconds / 1000;
-        long minutes = seconds / 60;
-        minutes = minutes % 60;
-        String secondsD = String.valueOf(seconds);
-        if (seconds < 10) {
+        seconds=mlSeconds/1000;
+
+
+        seconds=seconds%60;
+
+
+        String secondsD=String.valueOf(seconds);
+
+
+        if (seconds<10) {
             secondsD = "0" + seconds;
         }
+
+
         return secondsD;
     }
 
@@ -303,12 +332,15 @@ public class TimeActivity extends AppCompatActivity {
             Log.i("stopButton", "Wakelock released!!! (doesnt work)");
         }
         if (onBreak) {
+
             countDownTimerWithPauseBreak.pause();
+            circularProgressBar.setProgress(timeBreak);
             stopButton.setVisibility(View.INVISIBLE);
             continueButton.setVisibility(View.VISIBLE);
         }
         else if(!onBreak) {
             countDownTimerWithPause.pause();
+            circularProgressBar.setProgress(timeNormal);
             stopButton.setVisibility(View.INVISIBLE);
             continueButton.setVisibility(View.VISIBLE);
         }
@@ -323,9 +355,12 @@ public class TimeActivity extends AppCompatActivity {
         }
         if (onBreak){
             countDownTimerWithPauseBreak.resume();
+            //dont get the time of circular progress bar ,instead of get the time from countdowntimer
+            circularProgressBar.setProgressWithAnimation(timeBreak);
             stopButton.setVisibility(View.VISIBLE);
             continueButton.setVisibility(View.INVISIBLE);
         }
+        circularProgressBar.setProgressWithAnimation(timeNormal);
         countDownTimerWithPause.resume();
         stopButton.setVisibility(View.VISIBLE);
         continueButton.setVisibility(View.INVISIBLE);
@@ -340,10 +375,12 @@ public class TimeActivity extends AppCompatActivity {
         if (onBreak) {
             countDownTimerWithPauseBreak.cancel();
             startActivity(gobackIntent);
+            finish();
         }
         else if(!onBreak) {
             countDownTimerWithPause.cancel();
             startActivity(gobackIntent);
+            finish();
         }
     }
 

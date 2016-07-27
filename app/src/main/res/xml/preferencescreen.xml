@@ -35,22 +35,45 @@
             android:title="Android Wear Bildirimleri"
             android:defaultValue="true"
             />
+        <CheckBoxPreference
+            android:key="countdowntimer_wearnotifications_pKey"
+            android:summary="Mola süresi bitince Mi Band'inizi 3 kez titretir "
+            android:title="Mi Band Bildirimleri"
+            android:defaultValue="false"
+            />
 
 
 
     </PreferenceCategory>
 
-    <PreferenceCategory>
+    <PreferenceCategory
         android:title="Pro Versiyon Ayarları"
-        android:key="zii"
+        android:key="pro_category_key"
         >
 
-        <CheckBoxPreference
-            android:key="zaa"
-            android:summary="zaa"
-            android:title="zaa"
-            android:defaultValue="true"
+
+        <!--
+<http://stackoverflow.com/questions/9109413/how-to-show-selected-data-into-summary-of-list-preferences />
+<!- -->
+
+        <ListPreference
+            android:enabled="false"
+            android:summary="Kırmızı"
+            android:title="Progress Circle Rengi"
+            android:entries="@array/circularBarColorSettings"
+            android:entryValues="@array/circularBarColorSettings"
+            android:key="circular_bar_color_setting_key"
             />
+
+
+        <ListPreference
+            android:enabled="false"
+            android:summary="3"
+            android:title="Mi Band Titreşim Sayısı"
+            android:entries="@array/miBandVibrationSetting"
+            android:entryValues="@array/miBandVibrationSetting"/>
+
+
     </PreferenceCategory>
 
 
