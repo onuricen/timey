@@ -5,13 +5,21 @@
     android:background="#222222">
 
     <EditText
+
+        android:hint="Görüşlerin"
+        android:textStyle="bold"
         android:layout_width="match_parent"
-        android:layout_height="300dp"
+        android:layout_height="500dp"
         android:id="@+id/feedbackEdittext"
         android:layout_above="@+id/sendButton"
-        android:layout_below="@+id/fText" />
+        android:layout_below="@+id/fText"
+        android:textColor="@color/white"
+        android:textColorHint="#757575" />
 
     <TextView
+        android:textStyle="bold"
+        android:textColorHighlight="@color/white"
+        android:cursorVisible="false"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:textAppearance="?android:attr/textAppearanceSmall"
@@ -20,7 +28,8 @@
         android:layout_alignParentTop="true"
         android:layout_centerHorizontal="true"
         android:layout_marginTop="35dp"
-        android:textColor="#32383c" />
+        android:textColor="#ffffff"
+        android:textColorHint="#757575" />
 
     <Button
         style="@style/Widget.AppCompat.Button.Colored"
@@ -30,5 +39,7 @@
         android:id="@+id/sendButton"
         android:layout_alignParentBottom="true"
         android:layout_centerHorizontal="true" />
+
+
 
 </RelativeLayout>

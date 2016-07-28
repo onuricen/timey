@@ -3,6 +3,7 @@ package onur.timey;
 
 import android.os.Bundle;
 import android.preference.PreferenceActivity;
+import android.view.View;
 
 
 /**

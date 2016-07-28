@@ -18,9 +18,5 @@
         android:showAsAction="always"
         />
 
-    <item
-        android:id="@+id/aboutItem"
-        android:title="Hakkında"
-        android:showAsAction="always"
-        />
+
 </menu>
