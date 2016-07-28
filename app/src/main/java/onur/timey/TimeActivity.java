@@ -77,8 +77,10 @@ public class TimeActivity extends AppCompatActivity {
     @BindView(R.id.circularProgressBar)
     CircularProgressBar circularProgressBar;
 
-    int timeNormal;
-    int timeBreak;
+
+
+    float timeNormal;
+    float timeBreak;
 
 
     //look circularprogressbar s code to understand how animationwith timing works
@@ -89,8 +91,7 @@ public class TimeActivity extends AppCompatActivity {
 
             minText.setText(formatTimeMinutes(millisUntilFinished));
             secondsText.setText(formatTimeSeconds(millisUntilFinished));
-            timeFromMiliseconds=circularProgressBar.getProgress();
-            timeNormal=(int)millisUntilFinished;
+            timeNormal=circularProgressBar.getProgress();
 
         }
 
@@ -117,8 +118,7 @@ public class TimeActivity extends AppCompatActivity {
 
             minText.setText(formatTimeMinutes(millisUntilFinished));
             secondsText.setText(formatTimeSeconds(millisUntilFinished));
-            timeFromMiliseconds=circularProgressBar.getProgress();
-            timeBreak=(int)millisUntilFinished;
+            timeBreak=circularProgressBar.getProgress();
 
 
         }
@@ -165,7 +165,7 @@ public class TimeActivity extends AppCompatActivity {
     public boolean onBreak;
 
     String breakFinishNotfSentence="Mola Süren Bitti Çalışmana Devam Et";
-    float timeFromMiliseconds;
+   
 
 
 
@@ -194,6 +194,7 @@ public class TimeActivity extends AppCompatActivity {
         getSupportActionBar().setElevation(0);
 
         getSupportActionBar().setTitle(null);
+
 
 
         powerManager = (PowerManager) getSystemService(POWER_SERVICE);
@@ -331,16 +332,14 @@ public class TimeActivity extends AppCompatActivity {
         } else {
             Log.i("stopButton", "Wakelock released!!! (doesnt work)");
         }
+        circularProgressBar.setProgressWithAnimation(0);
         if (onBreak) {
-
             countDownTimerWithPauseBreak.pause();
-            circularProgressBar.setProgress(timeBreak);
             stopButton.setVisibility(View.INVISIBLE);
             continueButton.setVisibility(View.VISIBLE);
         }
         else if(!onBreak) {
             countDownTimerWithPause.pause();
-            circularProgressBar.setProgress(timeNormal);
             stopButton.setVisibility(View.INVISIBLE);
             continueButton.setVisibility(View.VISIBLE);
         }
@@ -355,31 +354,46 @@ public class TimeActivity extends AppCompatActivity {
         }
         if (onBreak){
             countDownTimerWithPauseBreak.resume();
+            circularProgressBar.setProgressWithAnimation(timeNormal);
             //dont get the time of circular progress bar ,instead of get the time from countdowntimer
-            circularProgressBar.setProgressWithAnimation(timeBreak);
             stopButton.setVisibility(View.VISIBLE);
+
             continueButton.setVisibility(View.INVISIBLE);
         }
-        circularProgressBar.setProgressWithAnimation(timeNormal);
+        circularProgressBar.setProgressWithAnimation(timeBreak);
+
         countDownTimerWithPause.resume();
+
         stopButton.setVisibility(View.VISIBLE);
+
         continueButton.setVisibility(View.INVISIBLE);
+
     }
     @OnClick(R.id.startButton)void startButton(){
         startButton.setVisibility(View.INVISIBLE);
+
         stopButton.setVisibility(View.VISIBLE);
+
         startMainTimer();
     }
     @OnClick(R.id.cancelButton)void cancelButton(){
         Intent gobackIntent=new Intent(TimeActivity.this,TimeActivity.class);
+
+        circularProgressBar.setProgress(0);
+
         if (onBreak) {
             countDownTimerWithPauseBreak.cancel();
+
             startActivity(gobackIntent);
+
             finish();
+
         }
         else if(!onBreak) {
             countDownTimerWithPause.cancel();
+
             startActivity(gobackIntent);
+
             finish();
         }
     }
