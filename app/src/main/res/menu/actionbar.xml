@@ -18,5 +18,10 @@
         android:showAsAction="always"
         />
 
+    <item
+        android:id="@+id/staticsItem"
+        android:title="İstatistikler"
+        android:showAsAction="always"/>
+
 
 </menu>

@@ -17,7 +17,6 @@ import android.net.Uri;
 import android.os.Bundle;
 import android.os.PowerManager;
 import android.preference.PreferenceManager;
-import android.support.annotation.Nullable;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v4.app.NotificationCompat;
 import android.support.v4.content.ContextCompat;
@@ -34,8 +33,7 @@ import butterknife.ButterKnife;
 import butterknife.OnClick;
 
 
-
-
+import com.db.chart.model.LineSet;
 import com.mikhaellopez.circularprogressbar.CircularProgressBar;
 
 
@@ -60,6 +58,8 @@ public class TimeActivity extends AppCompatActivity {
     private String breakFinishNotfSentence="Mola Süren Bitti Çalışmana Devam Et";
     private int getCurrentProgress;
     private  String keyPreference;
+    private boolean cancelButtonClicked;
+
 
 
     @BindView(R.id.breakOrMainTimer)
@@ -90,7 +90,57 @@ public class TimeActivity extends AppCompatActivity {
 
 
 
+    @OnClick(R.id.continueButton)void continueButton(){
+        if (wakeLock.isHeld()){
+            Log.i("Cont Button","Wakelock didn't released (still works)");
+        }
+        else {
+            Log.i("Cont Button","Wakelock released!!! (doesnt work)");
+        }
+        circularProgressBar.setProgressWithAnimation(100,getCurrentProgress);
+        if (onBreak){
+            countDownTimerWithPauseBreak.resume();
+            //dont get the time of circular progress bar ,instead of get the time from countdowntimer
 
+            continueButton.setVisibility(View.INVISIBLE);
+            continueButton.setClickable(false);
+        }else {
+
+            countDownTimerWithPause.resume();
+
+            continueButton.setVisibility(View.INVISIBLE);
+            continueButton.setClickable(false);
+        }
+    }
+    @OnClick(R.id.startButton)void startButton(){
+        startButton.setVisibility(View.INVISIBLE);
+        cancelButton.setVisibility(View.VISIBLE);
+        startMainTimer();
+    }
+    @OnClick(R.id.stopButton)void cancelButton(){
+
+        cancelButtonClicked=true;
+
+        Intent gobackIntent=new Intent(TimeActivity.this,TimeActivity.class);
+        gobackIntent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+
+
+        if (onBreak) {
+            countDownTimerWithPauseBreak.cancel();
+
+            startActivity(gobackIntent);
+
+            finish();
+
+        }
+        else if(!onBreak) {
+            countDownTimerWithPause.cancel();
+
+            startActivity(gobackIntent);
+
+            finish();
+        }
+    }
 
 
     private CountDownTimerWithPause  countDownTimerWithPause = new CountDownTimerWithPause(1500000, 1) {
@@ -168,18 +218,6 @@ public class TimeActivity extends AppCompatActivity {
     };
 
 
-
-
-
-
-
-
-
-
-
-
-
-
     @Override
     protected void onPause() {
         super.onPause();
@@ -191,7 +229,7 @@ public class TimeActivity extends AppCompatActivity {
     }
 
     @Override
-    protected void onCreate(@Nullable Bundle savedInstanceState) {
+    protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.time_activity);
 
@@ -205,8 +243,7 @@ public class TimeActivity extends AppCompatActivity {
 
         getSupportActionBar().setTitle(null);
 
-        startButton.setBackgroundTintList(ColorStateList.valueOf(Color.parseColor("#ffffff")));
-        cancelButton.setBackgroundTintList(ColorStateList.valueOf(Color.parseColor("#ffffff")));
+
 
 
 
@@ -254,10 +291,6 @@ public class TimeActivity extends AppCompatActivity {
         }
     }
 
-
-
-
-
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         getMenuInflater().inflate(R.menu.actionbar,menu);
@@ -283,6 +316,11 @@ public class TimeActivity extends AppCompatActivity {
                 startActivity(preferenceIntent);
                 return true;
             }
+            case R.id.staticsItem:{
+                Intent staticsIntent=new Intent(this,StaticsActivity.class);
+                startActivity(staticsIntent);
+                return true;
+            }
 
 
 
@@ -290,9 +328,6 @@ public class TimeActivity extends AppCompatActivity {
         }
         return super.onOptionsItemSelected(item);
     }
-
-
-
 
     private void startBreakTimeTimer() {
 
@@ -313,9 +348,6 @@ public class TimeActivity extends AppCompatActivity {
             circularProgressBar.setProgressWithAnimation(100, 300000);
 
     }
-
-
-
 
     private void startMainTimer() {
 
@@ -355,64 +387,6 @@ public class TimeActivity extends AppCompatActivity {
 
         return secondsD;
     }
-
-
-
-    private boolean cancelButtonClicked;
-
-
-    @OnClick(R.id.continueButton)void continueButton(){
-        if (wakeLock.isHeld()){
-            Log.i("Cont Button","Wakelock didn't released (still works)");
-        }
-        else {
-            Log.i("Cont Button","Wakelock released!!! (doesnt work)");
-        }
-        circularProgressBar.setProgressWithAnimation(100,getCurrentProgress);
-        if (onBreak){
-            countDownTimerWithPauseBreak.resume();
-            //dont get the time of circular progress bar ,instead of get the time from countdowntimer
-
-            continueButton.setVisibility(View.INVISIBLE);
-            continueButton.setClickable(false);
-        }else {
-
-            countDownTimerWithPause.resume();
-
-            continueButton.setVisibility(View.INVISIBLE);
-            continueButton.setClickable(false);
-        }
-    }
-    @OnClick(R.id.startButton)void startButton(){
-        startButton.setVisibility(View.INVISIBLE);
-        cancelButton.setVisibility(View.VISIBLE);
-        startMainTimer();
-    }
-    @OnClick(R.id.stopButton)void cancelButton(){
-
-        cancelButtonClicked=true;
-
-        Intent gobackIntent=new Intent(TimeActivity.this,TimeActivity.class);
-        gobackIntent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
-
-
-        if (onBreak) {
-            countDownTimerWithPauseBreak.cancel();
-
-            startActivity(gobackIntent);
-
-            finish();
-
-        }
-        else if(!onBreak) {
-            countDownTimerWithPause.cancel();
-
-            startActivity(gobackIntent);
-
-            finish();
-        }
-    }
-
 
 
     private void onBreakTimeNotification() {

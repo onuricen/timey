@@ -25,13 +25,7 @@ public class Settings extends PreferenceActivity  {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
-        //try to use ZaaTheme
-        /*
-        or you can use this
-                View someView = findViewById(R.id.screen);
-                View root = someView.getRootView();
-                root.setBackgroundColor(getResources().getColor(color.white));
-         */
+
 
         setTheme(R.style.AppTheme);
         super.onCreate(savedInstanceState);
@@ -48,10 +42,6 @@ public class Settings extends PreferenceActivity  {
 
     }
 
-    public void setListPreferenceSummary(String summary){
-        listPreference=(ListPreference)findPreference("circular_bar_color_setting_key");
-        listPreference.setSummary(summary);
-    }
 
 
     private void plusTimesShownToast(){

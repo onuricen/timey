@@ -12,6 +12,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.google.firebase.database.DataSnapshot;
@@ -22,6 +23,9 @@ import com.google.firebase.database.ValueEventListener;
 
 import java.util.LinkedList;
 
+import butterknife.BindView;
+import butterknife.ButterKnife;
+import butterknife.OnClick;
 
 
 /**
@@ -45,9 +49,16 @@ public class FeedbackActivity extends AppCompatActivity {
 
 
 
-    private EditText feedbackEditText;
-    private Button   sendButton;
 
+
+    @BindView(R.id.feedbackEdittext)TextView feedbackEditText;
+
+    @OnClick(R.id.sendButton)void send(){
+        String insideEditText=feedbackEditText.getEditableText().toString();
+        LinkedList<String> linkedList=new LinkedList<String>();
+        linkedList.add(insideEditText);
+        feedbackRef.push().setValue(linkedList);
+    }
 
     @Override
     protected void onCreate( Bundle savedInstanceState) {
@@ -56,25 +67,14 @@ public class FeedbackActivity extends AppCompatActivity {
         setContentView(R.layout.feedback_activity);
 
 
-        feedbackEditText=(EditText)findViewById(R.id.feedbackEdittext);
-        sendButton=(Button)findViewById(R.id.sendButton);
-
-
+        ButterKnife.bind(this);
 
 
         getSupportActionBar().setBackgroundDrawable(new ColorDrawable(0xFF303030));
         getSupportActionBar().setTitle("Feedback");
 
-        sendButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                String insideEditText=feedbackEditText.getEditableText().toString();
-                LinkedList<String> linkedList=new LinkedList<String>();
-                linkedList.add(insideEditText);
-                feedbackRef.push().setValue(linkedList);
 
-            }
-        });
+
 
     }
 
