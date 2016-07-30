@@ -3,6 +3,11 @@
     <string-array name="circularBarColorSettings">
         <item>Kırmızı</item>
         <item>Mor</item>
+        <item>Yeşil</item>
+        <item>Turuncu</item>
+        <item>Mavi</item>
+        <item>Zeytin Yeşili</item>
+        <item>Beyaz</item>
     </string-array>
     <string-array name="miBandVibrationSetting">
         <item>3</item>

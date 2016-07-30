@@ -5,4 +5,11 @@
     <color name="colorAccent">#009688</color>
     <color name="white">#FFFFFF</color>
     <color name="grayMaterial">#222222</color>
+    <color name="Mor">#9C27B0</color>
+    <color name="Kırmızı">#F44336</color>
+    <color name="Yeşil">#388E3C</color>
+    <color name="Turuncu">#FF5722</color>
+    <color name="Mavi">#448AFF</color>
+    <color name="zeytinYesili">#808000</color>
+    <color name="Beyaz">#ecf0f1</color>
 </resources>

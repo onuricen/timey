@@ -20,6 +20,7 @@ import android.preference.PreferenceManager;
 import android.support.annotation.Nullable;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v4.app.NotificationCompat;
+import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.view.Menu;
@@ -53,7 +54,12 @@ public class TimeActivity extends AppCompatActivity {
     PowerManager.WakeLock wakeLock;
     PowerManager powerManager;
 
+    private long seconds;
+    private boolean onBreak;
 
+    private String breakFinishNotfSentence="Mola Süren Bitti Çalışmana Devam Et";
+    private int getCurrentProgress;
+    private  String keyPreference;
 
 
     @BindView(R.id.breakOrMainTimer)
@@ -82,13 +88,12 @@ public class TimeActivity extends AppCompatActivity {
 
 
 
-   int getCurrentProgress;
 
 
 
 
-    //look circularprogressbar s code to understand how animationwith timing works
-    public CountDownTimerWithPause  countDownTimerWithPause = new CountDownTimerWithPause(1500000, 1) {
+
+    private CountDownTimerWithPause  countDownTimerWithPause = new CountDownTimerWithPause(1500000, 1) {
         // 1500000
         @Override
         public void onTick(long millisUntilFinished) {
@@ -112,7 +117,7 @@ public class TimeActivity extends AppCompatActivity {
 
 
 
-   public CountDownTimerWithPause countDownTimerWithPauseBreak = new CountDownTimerWithPause(300000, 1) {
+   private CountDownTimerWithPause countDownTimerWithPauseBreak = new CountDownTimerWithPause(300000, 1) {
         //300000
 
 
@@ -170,10 +175,6 @@ public class TimeActivity extends AppCompatActivity {
 
 
 
-    long seconds;
-    public boolean onBreak;
-
-    String breakFinishNotfSentence="Mola Süren Bitti Çalışmana Devam Et";
 
 
 
@@ -208,6 +209,11 @@ public class TimeActivity extends AppCompatActivity {
         cancelButton.setBackgroundTintList(ColorStateList.valueOf(Color.parseColor("#ffffff")));
 
 
+
+
+
+
+
         powerManager = (PowerManager) getSystemService(POWER_SERVICE);
         wakeLock = powerManager.newWakeLock(PowerManager.PARTIAL_WAKE_LOCK, "TimeyWakeLock");
         wakeLock.acquire();
@@ -219,6 +225,36 @@ public class TimeActivity extends AppCompatActivity {
         }
 
     }
+
+    private void setCpbColor(){
+        Settings settings=new Settings();
+        SharedPreferences getColorPreference= PreferenceManager.getDefaultSharedPreferences(getBaseContext());
+        String selectedColor=getColorPreference.getString("circular_bar_color_setting_key","Kırmızı");
+
+        if(selectedColor.equals("Kırmızı")){
+            circularProgressBar.setColor(ContextCompat.getColor(this,R.color.Kırmızı));
+        }
+        if (selectedColor.equals("Mor")){
+            circularProgressBar.setColor(ContextCompat.getColor(this,R.color.Mor));
+        }
+        if(selectedColor.equals("Yeşil")){
+            circularProgressBar.setColor(ContextCompat.getColor(this,R.color.Yeşil));
+        }
+        if(selectedColor.equals("Turuncu")){
+            circularProgressBar.setColor(ContextCompat.getColor(this,R.color.Turuncu));
+        }
+        if(selectedColor.equals("Mavi")){
+            circularProgressBar.setColor(ContextCompat.getColor(this,R.color.Mavi));
+        }
+        if(selectedColor.equals("Zeytin Yeşili")){
+            circularProgressBar.setColor(ContextCompat.getColor(this,R.color.zeytinYesili));
+        }
+        if (selectedColor.equals("Beyaz")){
+            circularProgressBar.setColor(ContextCompat.getColor(this,R.color.Beyaz));
+        }
+    }
+
+
 
 
 
@@ -256,11 +292,7 @@ public class TimeActivity extends AppCompatActivity {
     }
 
 
-    @Override
-    public void onBackPressed() {
-        super.onBackPressed();
 
-    }
 
     private void startBreakTimeTimer() {
 
@@ -291,11 +323,11 @@ public class TimeActivity extends AppCompatActivity {
         breakOrMainTimerText.setText("Çalışma");
         countDownTimerWithPause.start();
         circularProgressBar.setProgressWithAnimation(100, 1500000);
-
+        setCpbColor();
 
     }
 
-    public String formatTimeMinutes(long mlSeconds) {
+    private String formatTimeMinutes(long mlSeconds) {
         seconds = mlSeconds / 1000;
         long minutes = seconds / 60;
         minutes = minutes % 60;
@@ -306,7 +338,7 @@ public class TimeActivity extends AppCompatActivity {
         return minutesD;
     }
 
-    public String formatTimeSeconds(long mlSeconds) {
+    private String formatTimeSeconds(long mlSeconds) {
         seconds=mlSeconds/1000;
 
 
@@ -326,7 +358,7 @@ public class TimeActivity extends AppCompatActivity {
 
 
 
-    public boolean cancelButtonClicked;
+    private boolean cancelButtonClicked;
 
 
     @OnClick(R.id.continueButton)void continueButton(){
@@ -361,7 +393,7 @@ public class TimeActivity extends AppCompatActivity {
         cancelButtonClicked=true;
 
         Intent gobackIntent=new Intent(TimeActivity.this,TimeActivity.class);
-
+        gobackIntent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
 
 
         if (onBreak) {
@@ -383,7 +415,7 @@ public class TimeActivity extends AppCompatActivity {
 
 
 
-    public void onBreakTimeNotification() {
+    private void onBreakTimeNotification() {
 
         Bitmap largeIcon = BitmapFactory.decodeResource(getResources(), R.drawable.ic_timer_black_48dp);
 
@@ -422,7 +454,7 @@ public class TimeActivity extends AppCompatActivity {
 
 
 
-    public void onBreakFinishNotification() {
+    private void onBreakFinishNotification() {
 
 
         if (!cancelButtonClicked) {

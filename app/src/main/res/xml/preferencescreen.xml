@@ -36,12 +36,6 @@
             android:title="Android Wear Bildirimleri"
             android:defaultValue="true"
             />
-        <CheckBoxPreference
-            android:key="countdowntimer_wearnotifications_pKey"
-            android:summary="Mola süresi bitince Mi Band'inizi 3 kez titretir "
-            android:title="Mi Band Bildirimleri"
-            android:defaultValue="false"
-            />
 
 
 
@@ -53,13 +47,27 @@
         >
 
 
-        <!--
-<http://stackoverflow.com/questions/9109413/how-to-show-selected-data-into-summary-of-list-preferences />
-<!- -->
+
+       <EditTextPreference
+
+           android:enabled="true"
+           android:summary="Anatarınız varsa girip Pro özellikleri açabilirsiniz                       (girdikten sonra ana ekrana çıkıp tekrar ayarlara girin)"
+           android:dialogTitle="Pro Anahtarı"
+           android:title="Pro Anahtarı"
+           android:key="key_for_pro_pKey"/>
+
+        <CheckBoxPreference
+            android:enabled="false"
+            android:key="yakında"
+            android:summary="Yakında"
+            android:title="Yakında"
+            android:defaultValue="false"
+            />
+
 
         <ListPreference
             android:enabled="false"
-            android:summary="Kırmızı"
+            android:summary="Renk Seç"
             android:title="Progress Circle Rengi"
             android:entries="@array/circularBarColorSettings"
             android:entryValues="@array/circularBarColorSettings"
@@ -67,12 +75,16 @@
             />
 
 
-        <ListPreference
+        <EditTextPreference
+
             android:enabled="false"
-            android:summary="3"
-            android:title="Mi Band Titreşim Sayısı"
-            android:entries="@array/miBandVibrationSetting"
-            android:entryValues="@array/miBandVibrationSetting"/>
+            android:summary="Renk hex kodu girerek progress circle rengini değiştir"
+            android:dialogTitle="CircleProgressBar Özel Renk"
+            android:title="Özel Renk Ayarla [Yakında]"
+            android:key="custom_color_setting_pKey"/>
+
+
+
 
 
     </PreferenceCategory>
