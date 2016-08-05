@@ -3,6 +3,7 @@ package onur.timey;
 
 import android.content.SharedPreferences;
 import android.os.Bundle;
+import android.preference.CheckBoxPreference;
 import android.preference.ListPreference;
 import android.preference.Preference;
 import android.preference.PreferenceActivity;
@@ -10,6 +11,7 @@ import android.preference.PreferenceManager;
 import android.util.Log;
 import android.view.Display;
 import android.view.View;
+import android.widget.CheckBox;
 import android.widget.Toast;
 
 
@@ -23,6 +25,8 @@ public class Settings extends PreferenceActivity  {
     public boolean keyIsOn;
     String keyPreference;
 
+
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
 
@@ -32,6 +36,7 @@ public class Settings extends PreferenceActivity  {
         addPreferencesFromResource(R.xml.preferencescreen);
 
         listPreference=(ListPreference)findPreference("circular_bar_color_setting_key");
+
 
         getProKey();
         checkProKey();
@@ -56,6 +61,7 @@ public class Settings extends PreferenceActivity  {
         String getKey=sharedPreferences.getString("key","");
         if(getKey.equals("onispecial")) {
             listPreference.setEnabled(true);
+
 
             SharedPreferences prf=getSharedPreferences("toastKey",MODE_PRIVATE);
             int timesShownToast=prf.getInt("toastIntKey",0);

@@ -9,13 +9,6 @@
 
 
 
-
-
-
-
-
-
-
     <Button
         android:visibility="invisible"
         style="@style/Widget.AppCompat.Button.Colored"
@@ -62,6 +55,7 @@
         android:layout_alignParentEnd="true" />
 
     <RelativeLayout
+        android:layout_marginLeft="10dp"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:layout_above="@+id/spaceButton"
@@ -90,7 +84,7 @@
             android:id="@+id/minuteText"
             android:textColor="#d7ccc8"
             android:layout_marginLeft="54dp"
-            android:layout_marginTop="92dp"
+            android:layout_marginTop="114dp"
             android:layout_alignTop="@+id/circularProgressBar"
             android:layout_alignEnd="@+id/startButton" />
 
@@ -107,15 +101,17 @@
                 android:layout_alignParentEnd="true" />
 
         <android.support.design.widget.FloatingActionButton
+                android:layout_marginLeft="10dp"
                 app:backgroundTint="@color/Beyaz"
                 android:id="@+id/startButton"
                 android:src="@drawable/ic_play_black_24dp"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_alignTop="@+id/stopButton"
-                android:layout_alignStart="@+id/stopButton" />
+            android:layout_alignParentBottom="true"
+            android:layout_toStartOf="@+id/secondText" />
 
         <android.support.design.widget.FloatingActionButton
+            android:layout_marginLeft="10dp"
             app:backgroundTint="@color/Beyaz"
             android:id="@+id/stopButton"
             android:src="@drawable/ic_stop_black_24dp"

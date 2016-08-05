@@ -39,6 +39,9 @@
 
 
 
+
+
+
     </PreferenceCategory>
 
     <PreferenceCategory
@@ -83,6 +86,13 @@
             android:title="Özel Renk Ayarla [Yakında]"
             android:key="custom_color_setting_pKey"/>
 
+        <CheckBoxPreference
+            android:enabled="false"
+            android:key="zaapKey"
+            android:summary="Sadece aç ve menuden Zaa'ya gir :)"
+            android:title="Zaa"
+            android:defaultValue="false"
+            />
 
 
 

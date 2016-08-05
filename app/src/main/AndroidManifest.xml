@@ -14,6 +14,7 @@
 
 
         <uses-permission android:name="android.permission.WAKE_LOCK" />
+        <uses-library android:name="android.permission.INTERNET"/>
 
 
         <activity android:name=".TimeActivity" android:screenOrientation="portrait">
@@ -21,10 +22,14 @@
                 <action android:name="android.intent.action.MAIN" />
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value="onur.timey.TimeActivity"/>
         </activity>
         <activity android:name=".FeedbackActivity" android:screenOrientation="portrait"></activity>
         <activity android:name=".Settings" android:screenOrientation="portrait"></activity>
         <activity android:name=".StaticsActivity" android:screenOrientation="portrait"></activity>
+        <activity android:name=".AppIntro" android:screenOrientation="portrait"></activity>
     </application>
 
 </manifest>

@@ -19,4 +19,7 @@
         <item>9</item>
         <item>10</item>
     </string-array>
+
+    <string name="app_intro_desc1">Timey sıkılmadan konsantre bir şekilde çalışmanızı sağlayan  bir Pomodoro® Timer</string>
+    <string name="app_intro_desc2">Sadece süreyi başlat ve çalışmana başla mola zamanın gelince Timey sana bildirecek</string>
 </resources>

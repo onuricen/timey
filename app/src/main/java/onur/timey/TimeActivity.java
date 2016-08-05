@@ -7,10 +7,8 @@ import android.app.NotificationManager;
 import android.app.PendingIntent;
 import android.content.Intent;
 import android.content.SharedPreferences;
-import android.content.res.ColorStateList;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
-import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
 import android.media.RingtoneManager;
 import android.net.Uri;
@@ -33,8 +31,11 @@ import butterknife.ButterKnife;
 import butterknife.OnClick;
 
 
-import com.db.chart.model.LineSet;
 import com.mikhaellopez.circularprogressbar.CircularProgressBar;
+
+import java.text.SimpleDateFormat;
+import java.util.Calendar;
+import java.util.Locale;
 
 
 // i know this Class sucks little bit, but i promise i will do some refactoring (e.g setters)
@@ -47,7 +48,7 @@ public class TimeActivity extends AppCompatActivity {
     //  dont forget to consider re-writing in service instead of using PARTIAL_WAKE_LOCK
 
 
-    //Check here for bug http://stackoverflow.com/questions/2614719/how-do-i-get-the-sharedpreferences-from-a-preferenceactivity-in-android
+
 
     PowerManager.WakeLock wakeLock;
     PowerManager powerManager;
@@ -59,7 +60,8 @@ public class TimeActivity extends AppCompatActivity {
     private int getCurrentProgress;
     private  String keyPreference;
     private boolean cancelButtonClicked;
-
+    private String todayDate;
+    private int totalStatics;
 
 
     @BindView(R.id.breakOrMainTimer)
@@ -125,10 +127,12 @@ public class TimeActivity extends AppCompatActivity {
         gobackIntent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
 
 
+
+
         if (onBreak) {
             countDownTimerWithPauseBreak.cancel();
 
-            startActivity(gobackIntent);
+            TimeActivity.this.startActivity(gobackIntent);
 
             finish();
 
@@ -136,11 +140,101 @@ public class TimeActivity extends AppCompatActivity {
         else if(!onBreak) {
             countDownTimerWithPause.cancel();
 
-            startActivity(gobackIntent);
+            TimeActivity.this.startActivity(gobackIntent);
 
             finish();
         }
     }
+
+    private String getDate(){
+        String date = new SimpleDateFormat("yyyyMMdd").format(Calendar.getInstance().getTime());
+        return date;
+    }
+
+    public int getTotalStatics() {
+        return totalStatics;
+    }
+
+    private String getCurrentDayName(){
+        Calendar calendar=Calendar.getInstance();
+        int currentDay=calendar.get(Calendar.DAY_OF_WEEK);
+
+        // use some switch :D Im using If's so much :D
+
+        switch (currentDay){
+
+            case 1:{
+                return "Sunday";
+            }
+
+            case 2:{
+                return "Monday";
+            }
+
+            case 3:{
+                return "Tuesday";
+            }
+
+            case 4:{
+                return "Wednesday";
+            }
+            case 5:{
+                return "Thursday";
+            }
+
+            case 6:{
+                return "Friday";
+            }
+            case 7:{
+                return "Saturday";
+            }
+
+            default:{
+                return "";
+            }
+
+        }
+    }
+
+    private String getCurrentDayNameTurkish(){
+        switch (getCurrentDayName()){
+
+            case "Sunday":{
+                return "Pazar";
+            }
+
+            case "Monday":{
+                return "Pazartesi";
+            }
+
+            case "Tuesday":{
+                return "Salı";
+            }
+
+            case "Wednesday":{
+                return "Çarşamba";
+            }
+
+            case "Thursday":{
+                return "Perşembe";
+            }
+
+            case "Friday":{
+                return "Cuma";
+            }
+
+            case "Saturday":{
+                return "Cumartesi";
+            }
+
+            default:{
+                return "";
+            }
+
+
+        }
+    }
+
 
 
     private CountDownTimerWithPause  countDownTimerWithPause = new CountDownTimerWithPause(1500000, 1) {
@@ -158,16 +252,34 @@ public class TimeActivity extends AppCompatActivity {
 
         @Override
         public void onFinish() {
+            StaticsActivity statics=new StaticsActivity();
+
             onBreak = true;
             startBreakTimeTimer();
-
+            totalStatics=readTotalStatics();
+            totalStatics++;
+            addToTotalStatics();
+            statics.staticsInt=readTotalStatics();
         }
 
     };
 
+    private void addToTotalStatics(){
+        SharedPreferences prefs=getSharedPreferences("total_statics",MODE_PRIVATE);
+        SharedPreferences.Editor editor=prefs.edit();
+        editor.putInt("total_statics",totalStatics);
+    }
+
+    private int readTotalStatics(){
+        SharedPreferences prefs=getSharedPreferences("total_statics",MODE_PRIVATE);
+        int totalStaticsInt= prefs.getInt("total_statics",0);
+         totalStatics=totalStaticsInt;
+        return totalStaticsInt;
+    }
 
 
-   private CountDownTimerWithPause countDownTimerWithPauseBreak = new CountDownTimerWithPause(300000, 1) {
+
+    private CountDownTimerWithPause countDownTimerWithPauseBreak = new CountDownTimerWithPause(300000, 1) {
         //300000
 
 
@@ -241,13 +353,25 @@ public class TimeActivity extends AppCompatActivity {
         //removing actionbar's shadow
         getSupportActionBar().setElevation(0);
 
+        //removing title of actionbar
         getSupportActionBar().setTitle(null);
 
 
 
+        //stop button animation
+        overridePendingTransition(R.anim.fadein,R.anim.fadein);
 
 
 
+
+        todayDate=getDate();
+
+       SharedPreferences prefs = getSharedPreferences("zaa", MODE_PRIVATE);
+        if (prefs.getBoolean("firstrun", true)) {
+            prefs.edit().putBoolean("firstrun", false).commit();
+            Intent appIntroIntent=new Intent(this,AppIntro.class);
+            startActivity(appIntroIntent);
+        }
 
 
 
@@ -321,6 +445,9 @@ public class TimeActivity extends AppCompatActivity {
                 startActivity(staticsIntent);
                 return true;
             }
+
+
+
 
 
 
