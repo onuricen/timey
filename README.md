@@ -12,4 +12,6 @@ I can make this repo public when i finish public version
 
 
 # Thid Party Libaries this repo uses #
-[***EasyPermissions***](https://github.com/googlesamples/easypermissions)
+Butterknife
+CircularProgressBar
+AppIntro
