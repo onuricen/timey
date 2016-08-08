@@ -4,7 +4,6 @@ package onur.timey;
 
 import android.content.Intent;
 import android.graphics.drawable.ColorDrawable;
-import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 
 
@@ -12,9 +11,6 @@ import android.support.v4.app.NavUtils;
 import android.support.v7.app.AppCompatActivity;
 
 import android.view.MenuItem;
-import android.view.View;
-import android.widget.Button;
-import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -69,10 +65,13 @@ public class FeedbackActivity extends AppCompatActivity {
         getSupportActionBar().setBackgroundDrawable(new ColorDrawable(0xFF303030));
         getSupportActionBar().setTitle("Feedback");
 
+
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
 
     }
+
+
 
 
     @Override
@@ -96,7 +95,7 @@ public class FeedbackActivity extends AppCompatActivity {
 
     @Override
     public void onBackPressed() {
-        super.onBackPressed();
+       moveTaskToBack(true);
     }
 
     @Override
@@ -104,7 +103,9 @@ public class FeedbackActivity extends AppCompatActivity {
 
         switch (item.getItemId()){
             case android.R.id.home: {
-                NavUtils.navigateUpFromSameTask(this);
+                Intent zaa=new Intent(this,TimeActivity.class);
+                startActivity(zaa);
+                finish();
                 return true;
             }
 

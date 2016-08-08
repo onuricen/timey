@@ -340,6 +340,8 @@ public class TimeActivity extends AppCompatActivity {
         }
     }
 
+
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -356,10 +358,10 @@ public class TimeActivity extends AppCompatActivity {
         //removing title of actionbar
         getSupportActionBar().setTitle(null);
 
+        getSupportActionBar().setDisplayHomeAsUpEnabled(false);
+        overridePendingTransition(R.anim.fadein,R.anim.fadeout);
 
 
-        //stop button animation
-        overridePendingTransition(R.anim.fadein,R.anim.fadein);
 
 
 

@@ -50,14 +50,13 @@ public class StaticsActivity extends AppCompatActivity {
         int totalStatics = time.getTotalStatics();
         finishedTimesText.setText(Integer.toString(totalStatics));
 
-        getSupportActionBar().setHomeButtonEnabled(true);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
     }
 
     @Override
     public void onBackPressed() {
-        super.onBackPressed();
+        moveTaskToBack(true);
     }
 
     @Override
@@ -65,7 +64,9 @@ public class StaticsActivity extends AppCompatActivity {
 
         switch (item.getItemId()){
             case android.R.id.home: {
-                NavUtils.navigateUpFromSameTask(this);
+                Intent zaa=new Intent(this,TimeActivity.class);
+                startActivity(zaa);
+                finish();
                 return true;
             }
 
