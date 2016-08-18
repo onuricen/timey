@@ -234,8 +234,10 @@ public class TimeActivity extends AppCompatActivity {
 
         }
     }
+    private long CDTmillis;
+    private long CDTBmillis;
 
-
+     // TODO: 16.08.2016 copy CDTs to a service
 
     private CountDownTimerWithPause  countDownTimerWithPause = new CountDownTimerWithPause(1500000, 1) {
         // 1500000
@@ -244,8 +246,7 @@ public class TimeActivity extends AppCompatActivity {
 
             minText.setText(formatTimeMinutes(millisUntilFinished));
             secondsText.setText(formatTimeSeconds(millisUntilFinished));
-            long mlsUntlFnshd=millisUntilFinished;
-            getCurrentProgress=(int)mlsUntlFnshd;
+           CDTmillis=millisUntilFinished;
 
         }
 
@@ -263,6 +264,7 @@ public class TimeActivity extends AppCompatActivity {
         }
 
     };
+
 
     private void addToTotalStatics(){
         SharedPreferences prefs=getSharedPreferences("total_statics",MODE_PRIVATE);
@@ -290,8 +292,7 @@ public class TimeActivity extends AppCompatActivity {
 
             minText.setText(formatTimeMinutes(millisUntilFinished));
             secondsText.setText(formatTimeSeconds(millisUntilFinished));
-            long mlsUntlFnshd=millisUntilFinished;
-            getCurrentProgress=(int)mlsUntlFnshd;
+            CDTBmillis=millisUntilFinished;
 
 
 
@@ -340,7 +341,12 @@ public class TimeActivity extends AppCompatActivity {
         }
     }
 
+    @Override
+    public void onBackPressed() {
+        super.onBackPressed();
 
+
+    }
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -390,9 +396,10 @@ public class TimeActivity extends AppCompatActivity {
     }
 
     private void setCpbColor(){
-        Settings settings=new Settings();
+
         SharedPreferences getColorPreference= PreferenceManager.getDefaultSharedPreferences(getBaseContext());
         String selectedColor=getColorPreference.getString("circular_bar_color_setting_key","Kırmızı");
+
 
         if(selectedColor.equals("Kırmızı")){
             circularProgressBar.setColor(ContextCompat.getColor(this,R.color.Kırmızı));

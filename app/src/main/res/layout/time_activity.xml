@@ -122,6 +122,14 @@
             android:layout_alignTop="@+id/circularProgressBar">
 
 
+        </RelativeLayout>
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_alignTop="@+id/circularProgressBar"
+            android:layout_alignParentStart="true">
+
             <TextView
                 android:textSize="60dp"
                 android:layout_width="wrap_content"
@@ -132,9 +140,8 @@
                 android:gravity="center"
                 android:textColor="#d7ccc8"
                 android:layout_marginLeft="54dp"
-                android:layout_marginTop="123dp"
+                android:layout_marginTop="104dp"
                 android:layout_alignParentTop="true"
-                android:layout_centerVertical="true"
                 android:layout_centerHorizontal="true" />
 
             <TextView
