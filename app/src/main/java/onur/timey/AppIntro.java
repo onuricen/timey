@@ -4,7 +4,9 @@ import android.*;
 import android.Manifest;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
+import android.graphics.drawable.Drawable;
 import android.os.Bundle;
+import android.support.annotation.DrawableRes;
 import android.support.annotation.Nullable;
 import android.view.View;
 
@@ -35,6 +37,11 @@ public class AppIntro extends AppIntro2 {
     @Override
     public void onBackPressed() {
 
+    }
+
+    @Override
+    public void setImageSkipButton(@DrawableRes Drawable imageSkipButton) {
+        super.setImageSkipButton(null);
     }
 
     @Override

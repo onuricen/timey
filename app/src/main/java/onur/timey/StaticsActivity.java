@@ -46,9 +46,7 @@ public class StaticsActivity extends AppCompatActivity {
         ButterKnife.bind(this);
 
 
-        TimeActivity time = new TimeActivity();
-        int totalStatics = time.getTotalStatics();
-        finishedTimesText.setText(Integer.toString(totalStatics));
+
 
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 

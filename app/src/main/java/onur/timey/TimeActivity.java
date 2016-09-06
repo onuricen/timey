@@ -2,14 +2,19 @@ package onur.timey;
 
 
 
+import android.app.ActivityManager;
 import android.app.Notification;
 import android.app.NotificationManager;
 import android.app.PendingIntent;
+import android.content.BroadcastReceiver;
+import android.content.Context;
 import android.content.Intent;
+import android.content.IntentFilter;
 import android.content.SharedPreferences;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.drawable.ColorDrawable;
+import android.media.AudioManager;
 import android.media.RingtoneManager;
 import android.net.Uri;
 import android.os.Bundle;
@@ -18,6 +23,7 @@ import android.preference.PreferenceManager;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v4.app.NotificationCompat;
 import android.support.v4.content.ContextCompat;
+import android.support.v4.content.LocalBroadcastManager;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.view.Menu;
@@ -31,11 +37,14 @@ import butterknife.ButterKnife;
 import butterknife.OnClick;
 
 
+
 import com.mikhaellopez.circularprogressbar.CircularProgressBar;
 
-import java.text.SimpleDateFormat;
-import java.util.Calendar;
-import java.util.Locale;
+
+
+import android.os.Handler;
+
+
 
 
 // i know this Class sucks little bit, but i promise i will do some refactoring (e.g setters)
@@ -53,25 +62,26 @@ public class TimeActivity extends AppCompatActivity {
     PowerManager.WakeLock wakeLock;
     PowerManager powerManager;
 
+    CountDownTimerService serviceObj=new CountDownTimerService();
+
     private long seconds;
-    private boolean onBreak;
+    public static Handler handler;
 
     private String breakFinishNotfSentence="Mola Süren Bitti Çalışmana Devam Et";
     private int getCurrentProgress;
     private  String keyPreference;
-    private boolean cancelButtonClicked;
-    private String todayDate;
-    private int totalStatics;
+    public static boolean cancelButtonClicked;
+
 
 
     @BindView(R.id.breakOrMainTimer)
-    TextView breakOrMainTimerText;
+     TextView breakOrMainTimerText;
 
     @BindView(R.id.secondText)
     TextView secondsText;
 
     @BindView(R.id.minuteText)
-    TextView minText;
+     TextView minText;
 
 
     @BindView(R.id.continueButton)
@@ -92,261 +102,81 @@ public class TimeActivity extends AppCompatActivity {
 
 
 
-    @OnClick(R.id.continueButton)void continueButton(){
-        if (wakeLock.isHeld()){
-            Log.i("Cont Button","Wakelock didn't released (still works)");
-        }
-        else {
-            Log.i("Cont Button","Wakelock released!!! (doesnt work)");
-        }
-        circularProgressBar.setProgressWithAnimation(100,getCurrentProgress);
-        if (onBreak){
-            countDownTimerWithPauseBreak.resume();
-            //dont get the time of circular progress bar ,instead of get the time from countdowntimer
-
-            continueButton.setVisibility(View.INVISIBLE);
-            continueButton.setClickable(false);
-        }else {
-
-            countDownTimerWithPause.resume();
-
-            continueButton.setVisibility(View.INVISIBLE);
-            continueButton.setClickable(false);
-        }
-    }
     @OnClick(R.id.startButton)void startButton(){
         startButton.setVisibility(View.INVISIBLE);
         cancelButton.setVisibility(View.VISIBLE);
         startMainTimer();
     }
+
+
+
     @OnClick(R.id.stopButton)void cancelButton(){
 
         cancelButtonClicked=true;
 
+
         Intent gobackIntent=new Intent(TimeActivity.this,TimeActivity.class);
         gobackIntent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+        LocalBroadcastManager.getInstance(this).unregisterReceiver(receiver);
+        setTimerBoolean(false);
 
-
-
-
-        if (onBreak) {
-            countDownTimerWithPauseBreak.cancel();
-
-            TimeActivity.this.startActivity(gobackIntent);
-
-            finish();
-
-        }
-        else if(!onBreak) {
-            countDownTimerWithPause.cancel();
+        if (CountDownTimerService.onBreak) {
+            serviceObj.cancelBreakTimer();
 
             TimeActivity.this.startActivity(gobackIntent);
 
+            Intent service=new Intent(TimeActivity.this,CountDownTimerService.class);
+            stopService(service);
+            startActivity(gobackIntent);
+
+            finish();
+
+
+        }
+        else if(!CountDownTimerService.onBreak) {
+
+            serviceObj.cancelMainTimer();
+
+            startActivity(gobackIntent);
+
+            Intent service=new Intent(TimeActivity.this,CountDownTimerService.class);
+            stopService(service);
+
             finish();
         }
     }
 
-    private String getDate(){
-        String date = new SimpleDateFormat("yyyyMMdd").format(Calendar.getInstance().getTime());
-        return date;
+    @Override
+    protected void onStop() {
+        super.onStop();
     }
 
-    public int getTotalStatics() {
-        return totalStatics;
+    @Override
+    protected void onStart() {
+        super.onStart();
+        LocalBroadcastManager.getInstance(this).registerReceiver((receiver),
+                new IntentFilter(CountDownTimerService.RESULT)
+        );
     }
-
-    private String getCurrentDayName(){
-        Calendar calendar=Calendar.getInstance();
-        int currentDay=calendar.get(Calendar.DAY_OF_WEEK);
-
-        // use some switch :D Im using If's so much :D
-
-        switch (currentDay){
-
-            case 1:{
-                return "Sunday";
-            }
-
-            case 2:{
-                return "Monday";
-            }
-
-            case 3:{
-                return "Tuesday";
-            }
-
-            case 4:{
-                return "Wednesday";
-            }
-            case 5:{
-                return "Thursday";
-            }
-
-            case 6:{
-                return "Friday";
-            }
-            case 7:{
-                return "Saturday";
-            }
-
-            default:{
-                return "";
-            }
-
-        }
-    }
-
-    private String getCurrentDayNameTurkish(){
-        switch (getCurrentDayName()){
-
-            case "Sunday":{
-                return "Pazar";
-            }
-
-            case "Monday":{
-                return "Pazartesi";
-            }
-
-            case "Tuesday":{
-                return "Salı";
-            }
-
-            case "Wednesday":{
-                return "Çarşamba";
-            }
-
-            case "Thursday":{
-                return "Perşembe";
-            }
-
-            case "Friday":{
-                return "Cuma";
-            }
-
-            case "Saturday":{
-                return "Cumartesi";
-            }
-
-            default:{
-                return "";
-            }
-
-
-        }
-    }
-    private long CDTmillis;
-    private long CDTBmillis;
-
-     // TODO: 16.08.2016 copy CDTs to a service
-
-    private CountDownTimerWithPause  countDownTimerWithPause = new CountDownTimerWithPause(1500000, 1) {
-        // 1500000
-        @Override
-        public void onTick(long millisUntilFinished) {
-
-            minText.setText(formatTimeMinutes(millisUntilFinished));
-            secondsText.setText(formatTimeSeconds(millisUntilFinished));
-           CDTmillis=millisUntilFinished;
-
-        }
-
-
-        @Override
-        public void onFinish() {
-            StaticsActivity statics=new StaticsActivity();
-
-            onBreak = true;
-            startBreakTimeTimer();
-            totalStatics=readTotalStatics();
-            totalStatics++;
-            addToTotalStatics();
-            statics.staticsInt=readTotalStatics();
-        }
-
-    };
-
-
-    private void addToTotalStatics(){
-        SharedPreferences prefs=getSharedPreferences("total_statics",MODE_PRIVATE);
-        SharedPreferences.Editor editor=prefs.edit();
-        editor.putInt("total_statics",totalStatics);
-    }
-
-    private int readTotalStatics(){
-        SharedPreferences prefs=getSharedPreferences("total_statics",MODE_PRIVATE);
-        int totalStaticsInt= prefs.getInt("total_statics",0);
-         totalStatics=totalStaticsInt;
-        return totalStaticsInt;
-    }
-
-
-
-    private CountDownTimerWithPause countDownTimerWithPauseBreak = new CountDownTimerWithPause(300000, 1) {
-        //300000
-
-
-    //add a RelativeLayout inside
-
-        @Override
-        public void onTick(long millisUntilFinished) {
-
-            minText.setText(formatTimeMinutes(millisUntilFinished));
-            secondsText.setText(formatTimeSeconds(millisUntilFinished));
-            CDTBmillis=millisUntilFinished;
-
-
-
-        }
-
-        @Override
-        public void onFinish() {
-
-
-
-            SharedPreferences getPrefs = PreferenceManager.getDefaultSharedPreferences(getBaseContext());
-
-
-            boolean loop = getPrefs.getBoolean("countdowntimer_loop_pKey", true);
-
-
-            boolean notifSetting = getPrefs.getBoolean("countdowntimer_notifications_pKey", true);
-            if (notifSetting){
-                if(!loop){
-                    breakFinishNotfSentence="Mola Süren Bitti";
-                }
-                onBreakFinishNotification();
-            }
-
-
-            if (loop == true) {
-                onBreak = false;
-                startMainTimer();
-                Log.i("CdtLoop", "CountDownTimer Loop true");
-            } else {
-                Intent goBackMainIntent = new Intent(getApplicationContext(), TimeActivity.class);
-                startActivity(goBackMainIntent);
-                finish();
-            }
-        }
-    };
-
 
     @Override
     protected void onPause() {
         super.onPause();
-        if (wakeLock.isHeld()) {
-            Log.i("onPause", "Wakelock didn't released (still works)");
-        } else {
-            Log.i("onPause", "Wakelock released!!! (doesnt work)");
-        }
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
     }
 
     @Override
     public void onBackPressed() {
         super.onBackPressed();
-
-
     }
+
+
+
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -354,6 +184,9 @@ public class TimeActivity extends AppCompatActivity {
         setContentView(R.layout.time_activity);
 
         ButterKnife.bind(this);
+
+        AudioManager a=(AudioManager)getSystemService(Context.AUDIO_SERVICE);
+
 
         //changing actionbar's color to background color
         getSupportActionBar().setBackgroundDrawable(new ColorDrawable(0xff222222));
@@ -370,11 +203,7 @@ public class TimeActivity extends AppCompatActivity {
 
 
 
-
-
-        todayDate=getDate();
-
-       SharedPreferences prefs = getSharedPreferences("zaa", MODE_PRIVATE);
+        SharedPreferences prefs = getSharedPreferences("zaa", MODE_PRIVATE);
         if (prefs.getBoolean("firstrun", true)) {
             prefs.edit().putBoolean("firstrun", false).commit();
             Intent appIntroIntent=new Intent(this,AppIntro.class);
@@ -393,6 +222,34 @@ public class TimeActivity extends AppCompatActivity {
             Log.i("onCreate", "WakeLock released!!!");
         }
 
+
+        if (timerStarted()){
+            startButton.setVisibility(View.INVISIBLE);
+            cancelButton.setVisibility(View.VISIBLE);
+        }
+
+
+
+    }
+
+
+    private boolean timerStarted(){
+        SharedPreferences s=getSharedPreferences("timerStarted",MODE_PRIVATE);
+          return s.getBoolean("timerStarted",false);
+    }
+
+    private void setTimerBoolean(boolean tf){
+        SharedPreferences s=getSharedPreferences("timerStarted",MODE_PRIVATE);
+        s.edit().putBoolean("timerStarted",tf).apply();
+    }
+
+
+    public  boolean isCancelButtonClicked() {
+        return cancelButtonClicked;
+    }
+
+    public void setCancelButtonClicked(boolean cancelButtonClicked) {
+        this.cancelButtonClicked = cancelButtonClicked;
     }
 
     private void setCpbColor(){
@@ -477,11 +334,11 @@ public class TimeActivity extends AppCompatActivity {
 
         }
 
-        countDownTimerWithPauseBreak.start();
+        startService(new Intent(this,CountDownTimerService.class)); //todo start service here
         circularProgressBar.setProgress(0);
 
 
-            circularProgressBar.setProgressWithAnimation(100, 300000);
+        circularProgressBar.setProgressWithAnimation(100, 300000);
 
     }
 
@@ -489,7 +346,7 @@ public class TimeActivity extends AppCompatActivity {
 
 
         breakOrMainTimerText.setText("Çalışma");
-        countDownTimerWithPause.start();
+        startService(new Intent(this,CountDownTimerService.class));  //todo start service here
         circularProgressBar.setProgressWithAnimation(100, 1500000);
         setCpbColor();
 
@@ -562,9 +419,28 @@ public class TimeActivity extends AppCompatActivity {
         }
     }
 
+    private boolean isServiceRunning(){
+         String serviceName="onur.timey.CountDownTimerService";
+        ActivityManager manager =(ActivityManager)getSystemService(ACTIVITY_SERVICE);
+        for (ActivityManager.RunningServiceInfo service:manager.getRunningServices(Integer.MAX_VALUE)){
+            if (serviceName.equals(service.service.getClassName())){
+                return true;
+            }
+        }
+        return false;
+    }
 
+    private String getBreakFinishNotfSentence(){
+        SharedPreferences prefs=getSharedPreferences("notf_sentence",MODE_PRIVATE);
+        String firstSentence="Mola süren bitti";
+        if (!isServiceRunning()){
+            firstSentence="Mola süren bitti çalışmana geri dön";
+        }
+        String sentence=prefs.getString("breakNotf",firstSentence);
+        return sentence;
+    }
 
-    private void onBreakFinishNotification() {
+    protected  void onBreakFinishNotification() {
 
 
         if (!cancelButtonClicked) {
@@ -583,7 +459,7 @@ public class TimeActivity extends AppCompatActivity {
             Notification breakTimeNotification = new NotificationCompat.Builder(this)
                     .setLargeIcon(largeIcon)
                     .setContentTitle("Timey")
-                    .setContentText(breakFinishNotfSentence)
+                    .setContentText(getBreakFinishNotfSentence())
                     .setDefaults(Notification.DEFAULT_ALL)
                     .setSound(notification)
                     .setSmallIcon(R.drawable.ic_timer_white_36dp)
@@ -603,7 +479,18 @@ public class TimeActivity extends AppCompatActivity {
         }
     }
 
-}
+        public BroadcastReceiver receiver = new BroadcastReceiver() {
+            @Override
+            public void onReceive(Context context, Intent intent) {
+                String s = intent.getStringExtra(CountDownTimerService.MESSAGE);
+                long milis = Long.parseLong(s);
+                minText.setText(formatTimeMinutes(milis));
+                secondsText.setText(formatTimeSeconds(milis));
+            }
+        };
+
+    }
+
 
 
 
