@@ -1,4 +1,4 @@
-# This is a productivity app I made while learning Android SDK #
+# This is a productivity app I made while I was learning Android SDK #
 
 # README #
 
