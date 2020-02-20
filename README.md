@@ -7,3 +7,6 @@ Timey is an app helping you to stay away from your smartphone and stay focused o
 
 # [**Trello Development Board**](https://trello.com/b/lHNVOWHC/timey-development-board) #
 
+### Licence 
+MIT Licence
+
